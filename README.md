@@ -59,7 +59,12 @@ $ FLASK_APP=app flask run
 To run the application in production using gunicorn:
 
 ```
-$ gunicorn app.wsgi --bind 0.0.0.0:5000
+$ gunicorn app.wsgi --worker-class gevent --bind 0.0.0.0:5000
+
+[2019-03-18 21:22:16 +0000] [41951] [INFO] Starting gunicorn 19.9.0
+[2019-03-18 21:22:16 +0000] [41951] [INFO] Listening at: http://0.0.0.0:5000 (41951)
+[2019-03-18 21:22:16 +0000] [41951] [INFO] Using worker: gevent
+[2019-03-18 21:22:16 +0000] [41954] [INFO] Booting worker with pid: 41954
 ```
 
 ## Testing
@@ -70,6 +75,14 @@ To run unit tests:
 
 ```
 $ pytest tests
+============================= test session starts ==============================
+platform darwin -- Python 3.7.0, pytest-4.3.1, py-1.8.0, pluggy-0.9.0
+rootdir: /Users/snorf/Desktop/docker-example, inifile:
+collected 2 items                                                              
+
+tests/test_hello.py ..                                                   [100%]
+
+=========================== 2 passed in 0.02 seconds ===========================
 ```
 
 ## Docker
@@ -84,10 +97,37 @@ To build a Docker container with the application:
 
 ```
 $ docker build -t flask-example
+Sending build context to Docker daemon  142.8kB
+Step 1/7 : FROM python:3.7-slim-stretch
+ ---> f9c1866f07ea
+Step 2/7 : RUN pip install pipenv
+ ---> Using cache
+ ---> 75b1c76598bd
+Step 3/7 : ADD Pipfile Pipfile.lock ./
+ ---> Using cache
+ ---> b3199d824780
+Step 4/7 : RUN pipenv install --system --deploy
+ ---> Using cache
+ ---> 14b0ae1c4f16
+Step 5/7 : ADD app/ app/
+ ---> Using cache
+ ---> a125c0595c72
+Step 6/7 : EXPOSE 5000
+ ---> Using cache
+ ---> 9f83830741d8
+Step 7/7 : ENTRYPOINT [ "gunicorn", "app.wsgi", "--worker-class", "gevent", "--bind", "0.0.0.0:5000" ]
+ ---> Using cache
+ ---> 695d1b887f7a
+Successfully built 695d1b887f7a
+Successfully tagged flask-docker:latest
 ```
 
 To run the container:
 
 ```
 $ docker run -p 5000:5000 flask-example
+[2019-03-18 21:24:12 +0000] [1] [INFO] Starting gunicorn 19.9.0
+[2019-03-18 21:24:12 +0000] [1] [INFO] Listening at: http://0.0.0.0:5000 (1)
+[2019-03-18 21:24:12 +0000] [1] [INFO] Using worker: gevent
+[2019-03-18 21:24:12 +0000] [8] [INFO] Booting worker with pid: 8
 ```
