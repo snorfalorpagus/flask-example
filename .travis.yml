@@ -9,3 +9,6 @@ install:
 script:
   - pipenv run pytest tests
   - pipenv run flake8 app tests
+
+notifications:
+  email: false
