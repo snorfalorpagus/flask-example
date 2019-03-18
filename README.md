@@ -1,5 +1,7 @@
 # Example Flask application
 
+[![Build Status](https://travis-ci.org/snorfalorpagus/flask-example.svg?branch=master)](https://travis-ci.org/snorfalorpagus/flask-example)
+
 A minimal example of a Python web application using:
 
   * [Flask](http://flask.pocoo.org/) - a web application microframework
