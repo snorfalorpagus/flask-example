@@ -119,7 +119,7 @@ Step 7/7 : ENTRYPOINT [ "gunicorn", "app.wsgi", "--worker-class", "gevent", "--b
  ---> Using cache
  ---> 695d1b887f7a
 Successfully built 695d1b887f7a
-Successfully tagged flask-docker:latest
+Successfully tagged flask-example:latest
 ```
 
 To run the container:
